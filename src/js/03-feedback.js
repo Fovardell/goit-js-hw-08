@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import throttle from 'lodash.throttle';
 const elements = {
 	form: document.querySelector(".feedback-form"),
 	email: document.querySelector('input[name="email"]'),
@@ -8,7 +8,7 @@ const elements = {
 const { form, email, message, submit } = elements;
 
 
-const saveFormState = _.throttle(() => {
+const saveFormState = throttle(() => {
 	const data = {
 		email: email.value,
 		message: message.value
