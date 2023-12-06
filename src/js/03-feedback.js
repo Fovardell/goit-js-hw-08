@@ -1,6 +1,36 @@
-// В завданні 3 також потрібно перевіряти всі значення, які ви читаєте з localStorage і записуєте в поля форми.Якщо там пусто, вам у поля запишеться undefined.
-//  При сабміті форми не забувайте чистити обʼєкт в якому зберігаєте значення з полів форми, щоб інформація не тягнулась в наступні сабміти.
-// 	Форма має відправлятись при заповнених 2 - х полях форми
-// Також залишу вам відео - інструкцію, як користуватись Парселем:
-// https://www.loom.com/share/88768db322604d6e8e227e590db52f00
-// Всім продуктивного тижня: wink:* /;
+import _ from 'lodash';
+const elements = {
+	form: document.querySelector(".feedback-form"),
+	email: document.querySelector('input[name="email"]'),
+	message: document.querySelector('textarea[name="message"]'),
+	submit: document.querySelector('button[type="submit"]'),
+};
+const { form, email, message, submit } = elements;
+
+
+const saveFormState = _.throttle(() => {
+	const data = {
+		email: email.value,
+		message: message.value
+	};
+
+	localStorage.setItem("feedback-form-state", JSON.stringify(data));
+}, 500);
+
+form.addEventListener("input", saveFormState);
+
+const storedFormData = JSON.parse(localStorage.getItem("feedback-form-state")) || { email: "", message: "" };
+email.value = storedFormData.email;
+message.value = storedFormData.message;
+
+submit.addEventListener('click', (e) => {
+	e.preventDefault();
+
+	if (!email.value || !message.value) {
+		return;
+	}
+	console.log(`Your email: ${email.value}\nYour message: ${message.value}`);
+
+	form.reset();
+	localStorage.removeItem("feedback-form-state");
+});
