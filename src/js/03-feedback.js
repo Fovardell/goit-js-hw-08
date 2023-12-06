@@ -29,7 +29,7 @@ submit.addEventListener('click', (e) => {
 	if (!email.value || !message.value) {
 		return;
 	}
-	console.log(`Your email: ${email.value}\nYour message: ${message.value}`);
+	console.log({ email: email.value, message: message.value });
 
 	form.reset();
 	localStorage.removeItem("feedback-form-state");
